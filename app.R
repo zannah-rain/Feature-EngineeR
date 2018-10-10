@@ -21,12 +21,7 @@ sourceFolder("Shiny Modules")
 ui <- navbarPage(
    title = "Feature EngineeR",
    setupUI("setup_id"),
-   tabPanel("Summary View",
-            checkboxGroupInput("summary_checkboxes", 
-                               "Response(s): TODO",
-                               c("DEF", "DEF")),
-            tableOutput("table_metadataTODO"),
-            tableOutput("health_summaryTODO")),
+   overallSummaryUI("overall_summary_id"),
    tabPanel("Column View",
             # Sidebar with a slider input for number of bins 
             sidebarLayout(
