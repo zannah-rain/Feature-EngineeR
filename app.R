@@ -23,8 +23,7 @@ ui <- navbarPage(
   setupUI("setup_id"),
   overallSummaryUI("overall_summary_id"),
   columnViewUI("column_view_id"),
-  tabPanel("Script Output",
-           verbatimTextOutput("script_out")),
+  scriptOutputUI("script_output_id"),
   tabPanel("Data Output",
            actionButton("save_button", "Save Data TODO"),
            tableOutput("Processed data example"))
