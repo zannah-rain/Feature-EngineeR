@@ -10,26 +10,35 @@
 library(shiny)
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(
-   
-   # Application title
-   titlePanel("Old Faithful Geyser Data"),
-   
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("bins",
-                     "Number of bins:",
-                     min = 1,
-                     max = 50,
-                     value = 30)
-      ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("distPlot")
-      )
-   )
+ui <- navbarPage(
+   title = "Feature EngineeR",
+   tabPanel("Setup",
+            checkboxInput("stringsAsFactors_checkbox", "stringsAsFactors TODO", FALSE),
+            textInput("data_source_file", "Data path: TODO"),
+            fileInput("data_source_upload", "Upload data: TODO"),
+            submitButton("source_submit_button")),
+   tabPanel("Summary View",
+            checkboxGroupInput("summary_checkboxes", 
+                               "Response(s): TODO",
+                               c("DEF", "DEF")),
+            tableOutput("table_metadataTODO"),
+            tableOutput("health_summaryTODO")),
+   tabPanel("Column View",
+            # Sidebar with a slider input for number of bins 
+            sidebarLayout(
+              sidebarPanel(
+                selectInput("column_selector",
+                            "Column to view: TODO",
+                            c("DEF", "DEF"))
+              ),
+              
+              # Show a plot of the generated distribution
+              mainPanel(
+                plotOutput("distPlot")
+              )
+            )),
+   tabPanel("Script Output",
+            verbatimTextOutput("script_out"))
 )
 
 # Define server logic required to draw a histogram
