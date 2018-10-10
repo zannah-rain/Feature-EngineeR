@@ -19,25 +19,10 @@ sourceFolder("Shiny Modules")
 
 # Define UI for application that draws a histogram
 ui <- navbarPage(
-   title = "Feature EngineeR",
-   setupUI("setup_id"),
-   overallSummaryUI("overall_summary_id"),
-   tabPanel("Column View",
-            # Sidebar with a slider input for number of bins 
-            sidebarLayout(
-              sidebarPanel(
-                selectInput("column_selector",
-                            "Column to view: TODO",
-                            c("DEF", "DEF"))
-              ),
-              
-              # Show a plot of the generated distribution
-              mainPanel(
-                plotOutput("distPlot"),
-                textInput("missing_fill_box", "Fill NAs with: TODO"),
-                textInput("rename_column_box", "Rename column: TODO")
-              )
-            )),
+  title = "Feature EngineeR",
+  setupUI("setup_id"),
+  overallSummaryUI("overall_summary_id"),
+  columnViewUI("column_view_id"),
   tabPanel("Script Output",
            verbatimTextOutput("script_out")),
   tabPanel("Data Output",
