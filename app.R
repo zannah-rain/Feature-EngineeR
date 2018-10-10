@@ -40,7 +40,7 @@ ui <- navbarPage(
               mainPanel(
                 plotOutput("distPlot"),
                 textInput("missing_fill_box", "Fill NAs with: TODO"),
-                textInput("rename_column_box", "Rename column:")
+                textInput("rename_column_box", "Rename column: TODO")
               )
             )),
   tabPanel("Script Output",
