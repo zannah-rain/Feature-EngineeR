@@ -16,7 +16,7 @@ ui <- navbarPage(
             checkboxInput("stringsAsFactors_checkbox", "stringsAsFactors TODO", FALSE),
             textInput("data_source_file", "Data path: TODO"),
             fileInput("data_source_upload", "Upload data: TODO"),
-            submitButton("source_submit_button")),
+            actionButton("source_submit_button", "Load")),
    tabPanel("Summary View",
             checkboxGroupInput("summary_checkboxes", 
                                "Response(s): TODO",
@@ -34,24 +34,31 @@ ui <- navbarPage(
               
               # Show a plot of the generated distribution
               mainPanel(
-                plotOutput("distPlot")
+                plotOutput("distPlot"),
+                textInput("missing_fill_box", "Fill NAs with: TODO"),
+                textInput("rename_column_box", "Rename column:")
               )
             )),
-   tabPanel("Script Output",
-            verbatimTextOutput("script_out"))
+  tabPanel("Script Output",
+           verbatimTextOutput("script_out")),
+  tabPanel("Data Output",
+           actionButton("save_button", "Save Data TODO"),
+           tableOutput("Processed data example"))
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-   
-   output$distPlot <- renderPlot({
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2] 
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-   })
+  rv <- reactiveValues(raw_data = iris,
+                       output_data = iris)
+  
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2] 
+    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  })
 }
 
 # Run the application 
