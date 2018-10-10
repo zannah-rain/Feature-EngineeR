@@ -9,14 +9,18 @@
 
 library(shiny)
 
+sourceFolder <- function(folder) {
+  file_sources <- list.files(path = folder, pattern = "*.R$", full.names = TRUE)
+  sapply(file_sources, source, .GlobalEnv)
+}
+
+sourceFolder("Functions")
+sourceFolder("Shiny Modules")
+
 # Define UI for application that draws a histogram
 ui <- navbarPage(
    title = "Feature EngineeR",
-   tabPanel("Setup",
-            checkboxInput("stringsAsFactors_checkbox", "stringsAsFactors TODO", FALSE),
-            textInput("data_source_file", "Data path: TODO"),
-            fileInput("data_source_upload", "Upload data: TODO"),
-            actionButton("source_submit_button", "Load")),
+   setupUI("setup_id"),
    tabPanel("Summary View",
             checkboxGroupInput("summary_checkboxes", 
                                "Response(s): TODO",
@@ -49,7 +53,10 @@ ui <- navbarPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   rv <- reactiveValues(raw_data = iris,
+                       formatting_actions = initializeFormattingActions(iris),
                        output_data = iris)
+  
+  callModule(setup, "setup_id")
   
   output$distPlot <- renderPlot({
     # generate bins based on input$bins from ui.R
