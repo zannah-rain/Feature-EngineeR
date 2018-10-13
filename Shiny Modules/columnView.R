@@ -9,7 +9,7 @@ columnViewUI <- function(id) {
              sidebarPanel(
                selectInput(ns("column_selector"),
                            "Column to view: TODO",
-                           c("DEF", "DEF"))
+                           c("DEF", "DEF2"))
            ),
 
            # Show a plot of the generated distribution
@@ -21,15 +21,20 @@ columnViewUI <- function(id) {
   )
 }
 
-columnView <- function(input, output, session) {
-  # output$distPlot <- renderPlot({
-  #   # generate bins based on input$bins from ui.R
-  #   x    <- faithful[, 2] 
-  #   bins <- seq(min(x), max(x), length.out = 31)
-  #   
-  #   # draw the histogram with the specified number of bins
-  #   hist(x, breaks = bins, col = 'darkgray', border = 'white')
-  # })
+columnView <- function(input, output, session, raw_data) {
+  output$distPlot <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    x    <- faithful[, 2]
+    bins <- seq(min(x), max(x), length.out = 31)
+
+    # draw the histogram with the specified number of bins
+    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+  })
+  
+  observeEvent(raw_data(), {
+    print("Columns updating")
+    updateSelectInput(session, "column_selector", choices = as.list(names(raw_data())))
+  })
   
   return(NULL)
 }

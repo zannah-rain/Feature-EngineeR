@@ -35,8 +35,12 @@ server <- function(input, output) {
                        formatting_actions = initializeFormattingActions(iris),
                        output_data = iris)
   
-  callModule(setup, "setup_id")
-  callModule(columnView, "column_view_id")
+  rv$raw_data <- callModule(setup, "setup_id")
+  callModule(columnView, "column_view_id", rv$raw_data)
+  
+  observeEvent(rv$raw_data, {
+    print("rv$raw_data changed")
+  })
 }
 
 # Run the application 

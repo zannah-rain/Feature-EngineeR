@@ -11,5 +11,19 @@ setupUI <- function(id) {
 }
 
 setup <- function(input, output, session) {
+  rv <- reactiveValues("current_data" = iris)
   
+  # Try each possible input source when the button is pressed
+  observeEvent(input$source_submit_button, {
+    maybe_new_data <- try(read.csv(input$data_source_file), silent = TRUE)
+    if (is.error(maybe_new_data)) {
+      maybe_new_data <- try(read.csv(input$data_source_upload$datapath[1]), silent = TRUE)
+    }
+    
+    if (!is.error(maybe_new_data)) {
+      rv$current_data <- maybe_new_data
+    }
+  })
+  
+  reactive({rv$current_data})
 }
