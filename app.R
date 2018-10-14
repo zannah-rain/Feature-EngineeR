@@ -24,9 +24,7 @@ ui <- navbarPage(
   overallSummaryUI("overall_summary_id"),
   columnViewUI("column_view_id"),
   scriptOutputUI("script_output_id"),
-  tabPanel("Data Output",
-           actionButton("save_button", "Save Data TODO"),
-           tableOutput("Processed data example"))
+  dataOutputUI("data_output_id")
 )
 
 # Define server logic required to draw a histogram
@@ -38,6 +36,7 @@ server <- function(input, output) {
   rv$raw_data <- callModule(setup, "setup_id")
   callModule(columnView, "column_view_id", rv$raw_data)
   callModule(scriptOutput, "script_output_id", rv$formatting_actions)
+  callModule(dataOutput, "data_output_id")
   
   observeEvent(rv$raw_data, {
     rv$formatting_actions <- initializeFormattingActions(rv$raw_data)
