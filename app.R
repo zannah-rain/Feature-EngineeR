@@ -37,9 +37,10 @@ server <- function(input, output) {
   
   rv$raw_data <- callModule(setup, "setup_id")
   callModule(columnView, "column_view_id", rv$raw_data)
+  callModule(scriptOutput, "script_output_id", rv$formatting_actions)
   
   observeEvent(rv$raw_data, {
-    print("rv$raw_data changed")
+    rv$formatting_actions <- initializeFormattingActions(rv$raw_data)
   })
 }
 

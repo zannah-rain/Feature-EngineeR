@@ -8,11 +8,10 @@
 #' @examples
 #' initializeFormattingActions(iris)
 initializeFormattingActions <- function(x) {
-  y <- lapply(names(x),
-              function(y) {
-                list(new_name = y,
-                     missing_value_fill = robustAverage(x[[y]]))
-              })
-  names(y) <- names(x)
-  y
+  lapply(names(x),
+    function(y) {
+      list(initial_name = y,
+           new_name = y,
+           missing_value_fill = robustAverage(x[[y]]))
+    })
 }
