@@ -8,4 +8,6 @@ generateFormattingScript <- function(name, formatting_actions) {
 
 generateFormattingTidbit <- function(formatting_action, name) {
   script <- paste0("#### Formatting: ", formatting_action$initial_name)
+  
+  script
 }
