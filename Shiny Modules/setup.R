@@ -7,7 +7,8 @@ setupUI <- function(id) {
            checkboxInput(ns("stringsAsFactors_checkbox"), "stringsAsFactors", FALSE),
            textInput(ns("data_source_file"), "Data path:"),
            fileInput(ns("data_source_upload"), "Upload data:"),
-           actionButton(ns("source_submit_button"), "Load"))
+           actionButton(ns("source_submit_button"), "Load"),
+           actionButton(ns("load_test_button"), "Test data"))
 }
 
 setup <- function(input, output, session) {
@@ -23,6 +24,10 @@ setup <- function(input, output, session) {
     if (!is.error(maybe_new_data)) {
       rv$current_data <- maybe_new_data
     }
+  })
+  
+  observeEvent(input$load_test_button, {
+    rv$current_data <- read.csv("test_data.csv")
   })
   
   reactive({rv$current_data})
