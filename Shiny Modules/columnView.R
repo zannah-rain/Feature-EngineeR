@@ -24,7 +24,7 @@ columnViewUI <- function(id) {
 columnView <- function(input, output, session, raw_data) {
   output$distPlot <- renderPlot({
     # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
+    x    <- raw_data()[, input$column_selector]
     bins <- seq(min(x), max(x), length.out = 31)
 
     # draw the histogram with the specified number of bins
