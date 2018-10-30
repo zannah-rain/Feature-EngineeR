@@ -24,23 +24,24 @@ ui <- navbarPage(
   overallSummaryUI("overall_summary_id"),
   columnViewUI("column_view_id"),
   scriptOutputUI("script_output_id"),
-  dataOutputUI("data_output_id")
+  dataOutputUI("data_output_id"),
+  readableOutputUI("readable_formatting_output_id"),
+  dataReportUI("data_report_id")
 )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   rv <- reactiveValues(raw_data = iris,
-                       formatting_actions = initializeFormattingActions(iris),
                        output_data = iris)
   
   rv$raw_data <- callModule(setup, "setup_id")
-  callModule(columnView, "column_view_id", rv$raw_data)
-  callModule(scriptOutput, "script_output_id", rv$formatting_actions)
+  rv$formatting_actions <- callModule(columnView, "column_view_id", raw_data = rv$raw_data)
+  callModule(scriptOutput, "script_output_id", input_formatting_actions = rv$formatting_actions)
   callModule(dataOutput, "data_output_id")
   
   observeEvent(rv$raw_data(), {
     print("updating formatting_actions")
-    rv$formatting_actions <- initializeFormattingActions(rv$raw_data())
+    rv$initial_formatting_actions <- initializeFormattingActions(rv$raw_data())
   })
 }
 

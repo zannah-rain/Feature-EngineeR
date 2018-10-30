@@ -9,7 +9,7 @@ columnViewUI <- function(id) {
              sidebarPanel(
                selectInput(ns("column_selector"),
                            "Column to view: TODO",
-                           c("DEF", "DEF2"))
+                           c("DEF" = 1, "DEF2" = 2))
            ),
 
            # Show a plot of the generated distribution
@@ -22,9 +22,11 @@ columnViewUI <- function(id) {
 }
 
 columnView <- function(input, output, session, raw_data) {
+  formatting_actions <- reactiveVal()
+  
   output$distPlot <- renderPlot({
     # generate bins based on input$bins from ui.R
-    x    <- raw_data()[, input$column_selector]
+    x    <- raw_data()[, as.numeric(input$column_selector)]
     bins <- seq(min(x), max(x), length.out = 31)
 
     # draw the histogram with the specified number of bins
@@ -33,8 +35,26 @@ columnView <- function(input, output, session, raw_data) {
   
   observeEvent(raw_data(), {
     print("Columns updating")
-    updateSelectInput(session, "column_selector", choices = as.list(names(raw_data())))
+    
+    choiceList <- function(names) {
+      x <- as.list(1:length(names))
+      names(x) <- names
+      x
+    }
+    
+    updateSelectInput(session, "column_selector", choices = choiceList(names(raw_data())))
+    
+    formatting_actions(initializeFormattingActions(raw_data()))
   })
   
-  return(NULL)
+  observeEvent(input$column_selector, {
+    print(input$column_selector)
+  })
+  
+  observeEvent(input$rename_column_box, {
+    print(formatting_actions)
+    formatting_actions[[as.numeric(input$column_selector)]]$new_name <- input$rename_column_box
+  }, ignoreInit = TRUE)
+  
+  formatting_actions
 }
