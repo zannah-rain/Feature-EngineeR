@@ -12,6 +12,8 @@ initializeFormattingActions <- function(x) {
     function(y) {
       list(initial_name = y,
            new_name = y,
-           missing_value_fill = robustAverage(x[[y]]))
+           missing_value_fill = robustAverage(x[[y]]),
+           center = TRUE,
+           scale = TRUE)
     })
 }

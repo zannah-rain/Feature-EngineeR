@@ -7,7 +7,14 @@ generateFormattingScript <- function(name, formatting_actions) {
 }
 
 generateFormattingTidbit <- function(formatting_action, name) {
-  script <- paste0("#### Formatting: ", formatting_action$initial_name)
+  script <- paste0("#### Formatting: ", formatting_action$initial_name, "\n")
+  
+  if (!identical(formatting_action$initial_name, formatting_action$new_name)) {
+    script <- paste0(script, "\n# Renaming ", formatting_action$initial_name, " to ", formatting_action$new_name)
+    script <- paste0(script, "\ncolnames(", name, ")[colnames(", name, ") == ", formatting_action$initial_name, '] <- "', formatting_action$new_name, '"')
+  }
+  
+  
   
   script
 }
