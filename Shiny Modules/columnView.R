@@ -52,8 +52,9 @@ columnView <- function(input, output, session, raw_data) {
   })
   
   observeEvent(input$rename_column_box, {
-    print(formatting_actions)
-    formatting_actions[[as.numeric(input$column_selector)]]$new_name <- input$rename_column_box
+    formatting_actions_temp <- formatting_actions()
+    formatting_actions_temp[[as.numeric(input$column_selector)]]$new_name <- isolate(input$rename_column_box)
+    formatting_actions(formatting_actions_temp)
   }, ignoreInit = TRUE)
   
   formatting_actions
