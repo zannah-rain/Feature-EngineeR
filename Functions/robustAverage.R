@@ -17,8 +17,12 @@ robustAverage.default <- function(x) {
 }
 
 robustAverage.factor <- function(x) {
-  x <- as.character(x)
-  robustAverage(x)
+  if (is.ordered(x)) {
+    return(levels(x)[round(mean(x, na.rm = TRUE))])
+  } else {
+    x <- as.character(x)
+    return(robustAverage(x))
+  }
 }
 
 robustAverage.character <- function(x) {
